@@ -3,13 +3,18 @@
 var queryURL = ""
 var searchTerms = ["Reactions", "Entertainment", "Sports", "Artists"]
 
-$("#form-button").on('click', function(){
+$("#form-button--search").on('click', function(){
   var newTerm = $("#form-input").val().trim()
   if (newTerm !== ""){
     searchTerms.push($("#form-input").val().trim())
   } 
   renderSearchButtons() 
   $('#form-input').val("");
+})
+
+$('#form-button').on('click', function(){
+  searchTerms = ["Reactions", "Entertainment", "Sports", "Artists"]
+  renderSearchButtons()
 })
 
 function renderSearchButtons(){

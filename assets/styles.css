@@ -48,7 +48,6 @@
 
 #form-container {
   display: flex;
-  min-height: 65vh;
 }
 
 #form-input {
