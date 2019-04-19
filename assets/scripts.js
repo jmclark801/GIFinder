@@ -1,24 +1,36 @@
 // api key for GIPHY= DuOj8uufa0QSpV0TpSTo5eAip9bPStBX
 
 var queryURL = ""
-var searchTerms = ["Reactions", "Entertainment", "Sports", "Artists"]
+var searchTerms = ""
+var defaultSearchTerms = ['Reactions', 'Entertainment', 'Sports', 'Artists']
+if (JSON.parse(localStorage.getItem("searchTerms"))){
+  searchTerms = JSON.parse(localStorage.getItem("searchTerms"))
+} else {
+  searchTerms = defaultSearchTerms
+  localStorage.setItem("searchTerms", JSON.stringify(searchTerms))
+}
+console.log(searchTerms);
+
 
 $("#form-button--search").on('click', function(){
   var newTerm = $("#form-input").val().trim()
   if (newTerm !== ""){
     searchTerms.push($("#form-input").val().trim())
+    localStorage.setItem("searchTerms", JSON.stringify(searchTerms))
   } 
   renderSearchButtons() 
   $('#form-input').val("");
 })
 
 $('#form-button').on('click', function(){
-  searchTerms = ["Reactions", "Entertainment", "Sports", "Artists"]
+  localStorage.setItem("searchTerms", JSON.stringify(defaultSearchTerms))
   renderSearchButtons()
 })
 
 function renderSearchButtons(){
   $("#buttons-container").empty()
+  console.log(localStorage.getItem("searchTerms"))
+  searchTerms = JSON.parse(localStorage.getItem("searchTerms"))
   for (var i=0; i < searchTerms.length; i++){
     var newButton = $("<button>")
     newButton.addClass("button-search").val(searchTerms[i]).text(searchTerms[i]);
