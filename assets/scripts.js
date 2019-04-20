@@ -11,7 +11,6 @@ if (JSON.parse(localStorage.getItem("searchTerms"))){
 }
 console.log(searchTerms);
 
-
 $("#form-button--search").on('click', function(){
   var newTerm = $("#form-input").val().trim()
   if (newTerm !== ""){
@@ -45,29 +44,35 @@ function searchClickHandler(){
     queryURL = "https://api.giphy.com/v1/gifs/search?api_key=DuOj8uufa0QSpV0TpSTo5eAip9bPStBX&limit=9&q=" + searchTerm;
     $("#images-container").empty()    
     console.log(queryURL)
-
-    $.ajax({
-      url: queryURL,
-      method: 'GET'
-    }).then(function(response){
-      var results = response.data
-      var state = "play"
-      results.forEach(function(results){
-        var display = $("<div>")
-        var image = $("<img>")
-        display.addClass("image-wrapper")
-        display.attr("id", results.id)
-        image.addClass("giphy-image")
-        image.attr("src", results.images.original.url)
-        image.attr("data-play-src", results.images.original.url)
-        image.attr("data-pause-src", results.images.original_still.url)
-        image.attr("data-state", state)
-        display.append(image)
-        $("#images-container").append(display)
-      })
-      $(".giphy-image").on('click', imageClickHandler)
-    });  
+    getImages()
   })
+}
+
+function getImages(){
+  if (queryURL === ""){
+    queryURL = "https://api.giphy.com/v1/gifs/search?api_key=DuOj8uufa0QSpV0TpSTo5eAip9bPStBX&limit=9&q=hedgehog" 
+  }
+  $.ajax({
+    url: queryURL,
+    method: 'GET'
+  }).then(function(response){
+    var results = response.data
+    var state = "play"
+    results.forEach(function(results){
+      var display = $("<div>")
+      var image = $("<img>")
+      display.addClass("image-wrapper")
+      display.attr("id", results.id)
+      image.addClass("giphy-image")
+      image.attr("src", results.images.original.url)
+      image.attr("data-play-src", results.images.original.url)
+      image.attr("data-pause-src", results.images.original_still.url)
+      image.attr("data-state", state)
+      display.append(image)
+      $("#images-container").append(display)
+    })
+    $(".giphy-image").on('click', imageClickHandler)
+  });
 }
 
 function imageClickHandler(){ 
@@ -82,3 +87,4 @@ function imageClickHandler(){
 }
  
 renderSearchButtons()
+getImages()
